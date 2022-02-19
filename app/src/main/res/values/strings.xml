@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AudioSegmentV2</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="cont_desc_addnew_main">add new segment</string>
+    <string name="addnew">Add New</string>
 </resources>

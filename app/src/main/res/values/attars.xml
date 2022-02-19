@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="WeekdayText"  format="reference" />
+    <attr name="WeekendSatText" format="reference" />
+    <attr name="WeekendSunText" format="reference" />
+    <attr name="ForegroundOverlay" format="reference" />
+    <attr name="TextColorInv" format="reference" />
+    <attr name="BGColorTransparent" format="reference" />
+</resources>
