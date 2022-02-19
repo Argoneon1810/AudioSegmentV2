@@ -5,6 +5,17 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
-    <string name="cont_desc_addnew_main">add new segment</string>
     <string name="addnew">Add New</string>
+
+    <!-- Player -->
+    <string name="play">Play</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <!-- Content Descriptions -->
+    <string name="cont_desc_player_img">album art</string>
+    <string name="cont_desc_addnew_main">add new segment</string>
+    <string name="cont_desc_loop_btn">Toggle Loop</string>
+    <string name="cont_desc_condition_indicator">an indicator that shows whether the current segment is going to be played or not</string>
+    <string name="cont_desc_condition_toggle">Toggle individual segment</string>
 </resources>
