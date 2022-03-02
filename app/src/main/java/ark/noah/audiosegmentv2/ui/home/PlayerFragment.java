@@ -65,7 +65,7 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
     int color_textSecondary;
     boolean dataModified;
 
-    final float ALLOWANCE_MS = 100f;
+    long lastCheckTime;
 
     ExecutorService playablePreparerExecutor = Executors.newSingleThreadExecutor();
 
@@ -265,7 +265,6 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
             ArrayList<SegmentContainer> containers = null;
             while (true) {
                 if (dataModified) {
-                    Log.d("PlayableExecutor", "Recycler mData was modified");
                     containers = ((SegmentAdapter) Objects.requireNonNull(binding.recyclerViewSegments.getAdapter())).getmData();
                     dataModified = false;
                     nextPositionToBePlayed = -1;
@@ -283,12 +282,19 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
                             }
                         }
                         if (currentPlaySegmentIndex != -1) {
-                            if ((Math.floor(mediaPlayer.getCurrentPosition() / ALLOWANCE_MS) * ALLOWANCE_MS) == (Math.floor(containers.get(currentPlaySegmentIndex).getEnd_timestamp() / ALLOWANCE_MS) * ALLOWANCE_MS)) {
+                            long now = System.currentTimeMillis();
+                            if (lastCheckTime == 0) lastCheckTime = now;
+                            long refTime = containers.get(currentPlaySegmentIndex).getEnd_timestamp();
+                            long diff = now - lastCheckTime;
+
+                            if (SegmentContainer.isInRange(refTime - diff, refTime, mediaPlayer.getCurrentPosition())) {
                                 mediaPlayer.seekTo(nextPositionToBePlayed, MediaPlayer.SEEK_CLOSEST_SYNC);
                                 currentPlaySegmentIndex = nextToBePlayedIndex;
                                 nextPositionToBePlayed = -1;
                                 nextToBePlayedIndex = -1;
                             }
+
+                            lastCheckTime = now;
                         }
                     }
                 }

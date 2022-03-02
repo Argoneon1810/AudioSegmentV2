@@ -105,7 +105,10 @@ public class SegmentContainer {
         return ((this.start_timestamp - 1) == other.end_timestamp) || ((other.start_timestamp - 1) == this.end_timestamp);
     }
     public static boolean isInRange(SegmentContainer target, long time) {
-        return target.start_timestamp <= time && time <= target.end_timestamp;
+        return isInRange(target.start_timestamp, target.end_timestamp, time);
+    }
+    public static boolean isInRange(long from, long to, long target) {
+        return from <= target && target <= to;
     }
     //endregion
 
