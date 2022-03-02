@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.PlayerFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/internal_constlay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackground"
+        android:elevation="20dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txt_player_songdesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxLines="1"
+            android:text="@tools:sample/lorem[4]"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/img_player_albumart"
+            app:layout_constraintEnd_toEndOf="@+id/txt_player_songtitle"
+            app:layout_constraintStart_toStartOf="@+id/txt_player_songtitle" />
+
+        <Button
+            android:id="@+id/btn_play"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:contentDescription="@string/play"
+            app:icon="@drawable/ic_baseline_play_arrow_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="28dp"
+            app:iconTint="?android:attr/textColorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_player_songdesc" />
+
+        <Button
+            android:id="@+id/btn_next"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:contentDescription="@string/next"
+            app:icon="@drawable/ic_baseline_skip_next_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="28dp"
+            app:iconTint="?android:attr/textColorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/btn_play"
+            app:layout_constraintTop_toTopOf="@+id/btn_play" />
+
+        <Button
+            android:id="@+id/btn_prev"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:contentDescription="@string/previous"
+            app:icon="@drawable/ic_baseline_skip_previous_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="28dp"
+            app:iconTint="?android:attr/textColorPrimary"
+            app:layout_constraintEnd_toStartOf="@+id/btn_play"
+            app:layout_constraintTop_toTopOf="@+id/btn_play" />
+
+        <Button
+            android:id="@+id/btn_allloop"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:contentDescription="@string/cont_desc_loop_all_btn"
+            app:icon="@drawable/ic_baseline_repeat_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="28dp"
+            app:iconTint="?android:attr/textColorPrimary"
+            app:layout_constraintStart_toEndOf="@+id/btn_next"
+            app:layout_constraintTop_toTopOf="@+id/btn_next" />
+
+        <ImageView
+            android:id="@+id/img_player_albumart"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/cont_desc_player_img"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/txt_player_songtitle"
+            android:layout_width="0dp"
+            android:layout_height="27dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@tools:sample/lorem[4]"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_player_albumart"
+            app:layout_constraintTop_toTopOf="@+id/img_player_albumart" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btn_debugSplit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_debugsplit"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/internal_constlay" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedscrollmain"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/internal_constlay">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewSegments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                tools:listitem="@layout/recycler_item_segments" />
+
+            <Button
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:id="@+id/btn_addnewmain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_addnew"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="?android:attr/textColorPrimary"
+                app:icon="@drawable/ic_baseline_add_24"
+                app:iconGravity="top"
+                app:iconPadding="0dp"
+                app:iconSize="40dp"
+                app:iconTint="?android:attr/textColorPrimary" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/nestedscrollmain"
+        app:layout_constraintEnd_toEndOf="@+id/nestedscrollmain"
+        app:layout_constraintStart_toStartOf="@+id/nestedscrollmain"
+        app:layout_constraintTop_toBottomOf="@+id/internal_constlay">
+
+        <TextView
+            android:id="@+id/txt_noaudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="@string/player_no_entry"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/btn_openfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/player_open"
+            app:icon="@drawable/ic_baseline_add_24" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

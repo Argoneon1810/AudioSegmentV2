@@ -1,21 +1,61 @@
 <resources>
     <string name="app_name">AudioSegmentV2</string>
-    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_main2">Main Activity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-
-    <string name="addnew">Add New</string>
 
     <!-- Player -->
     <string name="play">Play</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <!-- For Debugs -->
+    <string name="debug_random">Random</string>
+    <string name="txt_debugsplit">Debug_Split</string>
+
     <!-- Content Descriptions -->
     <string name="cont_desc_player_img">album art</string>
-    <string name="cont_desc_addnew_main">add new segment</string>
-    <string name="cont_desc_loop_btn">Toggle Loop</string>
+    <string name="cont_desc_loop_btn">Toggle loop single segment</string>
+    <string name="cont_desc_loop_all_btn">Toggle loop entire audio file</string>
     <string name="cont_desc_condition_indicator">an indicator that shows whether the current segment is going to be played or not</string>
     <string name="cont_desc_condition_toggle">Toggle individual segment</string>
+
+    <!-- Text Times -->
+    <string name="txt_hr">hr</string>
+    <string name="txt_min">min</string>
+    <string name="txt_sec">secs</string>
+    <string name="txt_millis">millis</string>
+
+    <!-- Autofills -->
+    <string name="txt_autofill_millis" translatable="false">000</string>
+    <string name="txt_autofill_minsec" translatable="false">00</string>
+    <string name="txt_autofill_hrs" translatable="false">0</string>
+
+    <!-- Options -->
+    <string name="txt_option_rename">Rename Segment</string>
+    <string name="txt_option_cut">Cut Segment</string>
+    <string name="txt_option_combine">Combine Segments</string>
+    <string name="txt_option_mergeToPrevious">To Previous</string>
+    <string name="txt_option_mergeToNext">To Next</string>
+    <string name="txt_option_combine_title">Select merge target</string>
+
+    <!-- Dialogs -->
+    <string name="txt_from">From</string>
+    <string name="txt_to">To</string>
+    <string name="txt_apply">Apply</string>
+    <string name="txt_cutpoint">Cut At</string>
+    <string name="txt_newname">New Name</string>
+    <string name="txt_please_wait">Please wait for the changes to be applied</string>
+    <string name="error_name">Name cannot be empty</string>
+    <string name="txt_nothing_after">Current segment is the first segment</string>
+    <string name="txt_nothing_before">Current segment is the last segment</string>
+
+    <!-- Others -->
+    <string name="txt_addnew">Add New</string>
+    <string name="player_no_entry">There is no audio file currently opened.</string>
+    <string name="player_no_entry_short">No audio</string>
+    <string name="player_open">Open File</string>
+    <string name="txt_default_segment_name">New Segment</string>
+    <string name="txt_not_consequent_or_overlap">Two entry are not consequent or overlapping</string>
 </resources>

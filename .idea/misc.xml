@@ -3,14 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/drawable/box.xml" value="0.375" />
         <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.34375" />
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/drawable/ic_baseline_image_not_supported_24.xml" value="0.565625" />
         <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.375" />
         <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/drawable/ic_baseline_repeat_24.xml" value="0.375" />
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/drawable/roundedbox.xml" value="0.33" />
         <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/activity_main2.xml" value="0.32916666666666666" />
-        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/fragment_dashboard.xml" value="0.32916666666666666" />
-        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/fragment_home.xml" value="0.32916666666666666" />
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/dialog_cut_segment.xml" value="0.32760416666666664" />
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/dialog_cut_segment2.xml" value="0.32760416666666664" />
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/dialog_longpress_segment.xml" value="0.32760416666666664" />
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/dialog_rename_segment.xml" value="0.5494791666666666" />
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/dialog_wait_for_change.xml" value="0.32760416666666664" />
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/fragment_dashboard.xml" value="1.1" />
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/fragment_notifications.xml" value="0.32916666666666666" />
+        <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/fragment_player.xml" value="0.9" />
         <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/recycler_item_main.xml" value="0.32760416666666664" />
         <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/layout/recycler_item_segments.xml" value="0.35885416666666664" />
         <entry key="..\:/Users/Noah Choi/AndroidStudioProjects/AudioSegmentV2/app/src/main/res/menu/bottom_nav_menu.xml" value="0.32760416666666664" />

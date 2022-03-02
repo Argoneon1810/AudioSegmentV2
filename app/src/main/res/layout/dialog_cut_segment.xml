@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/txt_fromHeader"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:text="@string/txt_from"
+        android:textColor="?attr/TextColor"
+        app:layout_constraintBottom_toBottomOf="@+id/eTxt_hrfrom"
+        app:layout_constraintEnd_toStartOf="@+id/eTxt_hrfrom"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/eTxt_hrfrom"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <EditText
+        android:id="@+id/eTxt_hrfrom"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="4dp"
+        android:autofillHints="@string/txt_autofill_hrs"
+        android:ems="10"
+        android:hint="@string/txt_autofill_hrs"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/eTxt_minfrom"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txt_fromHeader"
+        app:layout_constraintTop_toTopOf="@+id/eTxt_minfrom" />
+
+    <EditText
+        android:id="@+id/eTxt_minfrom"
+        android:layout_width="52dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="4dp"
+        android:autofillHints="@string/txt_autofill_minsec"
+        android:ems="10"
+        android:hint="@string/txt_autofill_minsec"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/eTxt_secsfrom"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/eTxt_hrfrom"
+        app:layout_constraintTop_toTopOf="@+id/eTxt_secsfrom" />
+
+    <EditText
+        android:id="@+id/eTxt_secsfrom"
+        android:layout_width="52dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="4dp"
+        android:autofillHints="@string/txt_autofill_minsec"
+        android:ems="10"
+        android:hint="@string/txt_autofill_minsec"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/eTxt_millisfrom"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/eTxt_minfrom"
+        app:layout_constraintTop_toTopOf="@+id/eTxt_millisfrom" />
+
+    <EditText
+        android:id="@+id/eTxt_millisfrom"
+        android:layout_width="64dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="4dp"
+        android:autofillHints="@string/txt_autofill_millis"
+        android:ems="10"
+        android:hint="@string/txt_autofill_millis"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/eTxt_secsfrom"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_toHeader"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:text="@string/txt_to"
+        android:textColor="?attr/TextColor"
+        app:layout_constraintBottom_toBottomOf="@+id/eTxt_hr"
+        app:layout_constraintEnd_toStartOf="@+id/eTxt_hr"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/eTxt_hr"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <EditText
+        android:id="@+id/eTxt_hr"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="4dp"
+        android:autofillHints="@string/txt_autofill_hrs"
+        android:ems="10"
+        android:hint="@string/txt_autofill_hrs"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/eTxt_min"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txt_toHeader"
+        app:layout_constraintTop_toTopOf="@+id/eTxt_min" />
+
+    <EditText
+        android:id="@+id/eTxt_min"
+        android:layout_width="52dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="4dp"
+        android:autofillHints="@string/txt_autofill_minsec"
+        android:ems="10"
+        android:hint="@string/txt_autofill_minsec"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/eTxt_secs"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/eTxt_hr"
+        app:layout_constraintTop_toTopOf="@+id/eTxt_secs" />
+
+    <EditText
+        android:id="@+id/eTxt_secs"
+        android:layout_width="52dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="4dp"
+        android:autofillHints="@string/txt_autofill_minsec"
+        android:ems="10"
+        android:hint="@string/txt_autofill_minsec"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/eTxt_millis"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/eTxt_min"
+        app:layout_constraintTop_toTopOf="@+id/eTxt_millis" />
+
+    <EditText
+        android:id="@+id/eTxt_millis"
+        android:layout_width="64dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="4dp"
+        android:autofillHints="@string/txt_autofill_millis"
+        android:ems="10"
+        android:hint="@string/txt_autofill_millis"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/eTxt_secs"
+        app:layout_constraintTop_toBottomOf="@+id/eTxt_secsfrom" />
+
+    <TextView
+        android:id="@+id/txt_placeholder"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/txt_hr"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eTxt_millis" />
+
+    <TextView
+        android:id="@+id/txt_hr"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:text="@string/txt_hr"
+        android:textAlignment="textEnd"
+        android:textColor="?attr/TextColorDisabled"
+        app:layout_constraintEnd_toStartOf="@+id/txt_min"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txt_placeholder"
+        app:layout_constraintTop_toTopOf="@+id/txt_placeholder" />
+
+    <TextView
+        android:id="@+id/txt_min"
+        android:layout_width="52dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:text="@string/txt_min"
+        android:textAlignment="textEnd"
+        android:textColor="?attr/TextColorDisabled"
+        app:layout_constraintEnd_toStartOf="@+id/txt_secs"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txt_hr"
+        app:layout_constraintTop_toTopOf="@+id/txt_hr" />
+
+    <TextView
+        android:id="@+id/txt_secs"
+        android:layout_width="52dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:text="@string/txt_sec"
+        android:textAlignment="textEnd"
+        android:textColor="?attr/TextColorDisabled"
+        app:layout_constraintEnd_toStartOf="@+id/txt_millis"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txt_min"
+        app:layout_constraintTop_toTopOf="@+id/txt_min" />
+
+    <TextView
+        android:id="@+id/txt_millis"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:text="@string/txt_millis"
+        android:textAlignment="textEnd"
+        android:textColor="?attr/TextColorDisabled"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/txt_secs"
+        app:layout_constraintTop_toTopOf="@+id/txt_secs" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/debug_random"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_placeholder" />
+
+    <Button
+        android:id="@+id/btn_cut_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_apply"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+</androidx.constraintlayout.widget.ConstraintLayout>

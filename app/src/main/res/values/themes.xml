@@ -17,14 +17,16 @@
         <!-- Customize your theme here. -->
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColorSecondary">@color/dark_grey</item>
+        <item name="android:textColorSecondary">@color/grey</item>
         <item name="android:actionMenuTextColor">@color/black</item>
 
-        <item name="WeekdayText">@color/dark_grey</item>
+        <item name="TextColor">@color/black</item>
+        <item name="TextColorDisabled">@color/grey</item>
+        <item name="TextColorInversed">@color/white</item>
+
+        <item name="WeekdayText">@color/grey</item>
         <item name="WeekendSatText">@color/dark_blue</item>
         <item name="WeekendSunText">@color/dark_red</item>
-
-        <item name="TextColorInv">@color/white</item>
 
         <item name="ForegroundOverlay">@color/lite_overlay</item>
 
