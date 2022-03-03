@@ -288,10 +288,14 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
                             long diff = now - lastCheckTime;
 
                             if (SegmentContainer.isInRange(refTime - diff, refTime, mediaPlayer.getCurrentPosition())) {
-                                mediaPlayer.seekTo(nextPositionToBePlayed, MediaPlayer.SEEK_CLOSEST_SYNC);
-                                currentPlaySegmentIndex = nextToBePlayedIndex;
-                                nextPositionToBePlayed = -1;
-                                nextToBePlayedIndex = -1;
+                                if(containers.get(currentPlaySegmentIndex).isLooping()) {
+                                    mediaPlayer.seekTo(containers.get(currentPlaySegmentIndex).getStart_timestamp(), MediaPlayer.SEEK_CLOSEST_SYNC);
+                                } else {
+                                    mediaPlayer.seekTo(nextPositionToBePlayed, MediaPlayer.SEEK_CLOSEST_SYNC);
+                                    currentPlaySegmentIndex = nextToBePlayedIndex;
+                                    nextPositionToBePlayed = -1;
+                                    nextToBePlayedIndex = -1;
+                                }
                             }
 
                             lastCheckTime = now;
