@@ -41,6 +41,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -51,23 +52,25 @@ import ark.noah.audiosegmentv2.databinding.FragmentPlayerBinding;
 
 public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAdapterToPlayerTransactionInterface {
 
+    public static final String KEY_PLAYER_PREF = "";
+    public static final String DEBUG_PLAYABLE_PREPARER_TAG = "=========Playable Preparer";
+
     private PlayerViewModel playerViewModel;
     private FragmentPlayerBinding binding;
 
-    public static String KEY_PLAYER_PREF = "";
+    private Drawable icon_Play, icon_Pause, icon_Warning, icon_No_Image;
+    private ViewGroup.LayoutParams recyclerMaxSizeParams;
 
-    Drawable icon_Play, icon_Pause, icon_Warning, icon_No_Image;
-    ViewGroup.LayoutParams recyclerMaxSizeParams;
+    private MediaPlayer mediaPlayer;
+    private Uri musicUri;
+    private final static int SEEKMODE = MediaPlayer.SEEK_NEXT_SYNC;
 
-    MediaPlayer mediaPlayer;
-    Uri musicUri;
+    private int color_textSecondary;
+    private boolean bInterruptDataModified, bInterruptNext, bInterruptPrev;
 
-    int color_textSecondary;
-    boolean dataModified;
+    private long lastCheckTime;
 
-    long lastCheckTime;
-
-    ExecutorService playablePreparerExecutor = Executors.newSingleThreadExecutor();
+    private ExecutorService playablePreparerExecutor = Executors.newSingleThreadExecutor();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -167,7 +170,7 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
                             binding.recyclerViewSegments.setLayoutManager(new LinearLayoutManager(requireContext()));
                             binding.recyclerViewSegments.setAdapter(adapter);
 
-                            dataModified = true;
+                            bInterruptDataModified = true;
 
                             //set recycler height matching to itemcount (as there will be single entry)
                             resizeRecyclerToMatching();
@@ -188,11 +191,12 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("audio/*");
+            intent.setFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             fileActivityResultLauncher.launch(intent);
         });
         //endregion
 
-        //region Player Buttons Listener
+        //region Player Control Buttons Listener
         binding.btnPlay.setOnClickListener(v -> {
             while(true) {
                 if(mediaPlayer!=null) {
@@ -205,13 +209,18 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
                     }
                     break;
                 } else if(musicUri != null) {
-                    mediaPlayer = MediaPlayer.create(requireContext(), musicUri);
+//                    mediaPlayer = MediaPlayer.create(requireContext(), musicUri);
+                    try {
+                        mediaPlayer.setDataSource(musicUri.getPath());
+                    } catch (IOException e) {
+                        Toast.makeText(requireContext(), "Setting of media player failed", Toast.LENGTH_SHORT).show();
+                    }
 
                     SegmentAdapter adapter = ((SegmentAdapter) binding.recyclerViewSegments.getAdapter());
                     ArrayList<SegmentContainer> containers = Objects.requireNonNull(adapter).getmData();
                     mediaPlayer.seekTo(
                             containers.get(getEarliestNextPlayableIndex(containers, 0)).getStart_timestamp(),
-                            MediaPlayer.SEEK_PREVIOUS_SYNC
+                            SEEKMODE
                     );
                 } else {
                     Toast.makeText(requireContext(), R.string.player_no_entry, Toast.LENGTH_SHORT).show();
@@ -232,6 +241,13 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
                 }
             }
         });
+
+        binding.btnNext.setOnClickListener(v -> {
+            if(!bInterruptNext) bInterruptNext = true;
+        });
+        binding.btnPrev.setOnClickListener(v -> {
+            if(!bInterruptPrev) bInterruptPrev = true;
+        });
         //endregion
 
         //region Debug Split
@@ -248,7 +264,7 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
                     }
                 }
                 binding.btnDebugSplit.setVisibility(View.GONE);
-                dataModified = true;
+                bInterruptDataModified = true;
 
                 resizeRecyclerView();
             } catch (Exception e) {
@@ -259,48 +275,135 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
 
         //region Asynchronous Task
         playablePreparerExecutor.submit(() -> {
+            Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Executor Launched");
             long nextPositionToBePlayed = -1;
             int nextToBePlayedIndex = -1;
             int currentPlaySegmentIndex = -1;
             ArrayList<SegmentContainer> containers = null;
+
+            boolean bNext, bPrev, bAgain, bCheckCurrent, bFirstTimeOnly;
+            bNext = bPrev = bAgain = bCheckCurrent = false;
+            bFirstTimeOnly = true;
+
+            boolean debugLoopEnter, debugMediaIsPlaying;
+            debugLoopEnter = debugMediaIsPlaying = false;
+
             while (true) {
-                if (dataModified) {
-                    containers = ((SegmentAdapter) Objects.requireNonNull(binding.recyclerViewSegments.getAdapter())).getmData();
-                    dataModified = false;
-                    nextPositionToBePlayed = -1;
-                    nextToBePlayedIndex = -1;
-                }
-                if(containers != null) {
-                    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                        if (nextPositionToBePlayed == -1) {
-                            if (currentPlaySegmentIndex == -1) {
-                                currentPlaySegmentIndex = PlayerFragment.this.getEarliestPlayableIndex(containers);
-                            }
-                            nextToBePlayedIndex = PlayerFragment.this.getEarliestNextPlayableIndex(containers, currentPlaySegmentIndex);
-                            if (nextToBePlayedIndex != -1) {
-                                nextPositionToBePlayed = containers.get(nextToBePlayedIndex).getStart_timestamp();
-                            }
-                        }
-                        if (currentPlaySegmentIndex != -1) {
-                            long now = System.currentTimeMillis();
-                            if (lastCheckTime == 0) lastCheckTime = now;
-                            long refTime = containers.get(currentPlaySegmentIndex).getEnd_timestamp();
-                            long diff = now - lastCheckTime;
+                try {
+                    if(!debugLoopEnter) {
+                        debugLoopEnter = true;
+                        Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Loop Entered");
+                    }
+                    if (bInterruptDataModified) {
+                        Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Interruption: Data Modified");
+                        containers = ((SegmentAdapter) Objects.requireNonNull(binding.recyclerViewSegments.getAdapter())).getmData();
+                        bInterruptDataModified = false;
+                        nextToBePlayedIndex = -1;
+                        nextPositionToBePlayed = -1;
+                        bCheckCurrent = true;
+                    }
+                    if(bInterruptPrev) {
+                        Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Interruption: To Previous Segment");
+                        bInterruptPrev = false;
+                        bPrev = true;
+                    }
+                    if(bInterruptNext) {
+                        Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Interruption: To Next Segment");
+                        bInterruptNext = false;
+                        bNext = true;
+                    }
 
-                            if (SegmentContainer.isInRange(refTime - diff, refTime, mediaPlayer.getCurrentPosition())) {
-                                if(containers.get(currentPlaySegmentIndex).isLooping()) {
-                                    mediaPlayer.seekTo(containers.get(currentPlaySegmentIndex).getStart_timestamp(), MediaPlayer.SEEK_CLOSEST_SYNC);
-                                } else {
-                                    mediaPlayer.seekTo(nextPositionToBePlayed, MediaPlayer.SEEK_CLOSEST_SYNC);
-                                    currentPlaySegmentIndex = nextToBePlayedIndex;
-                                    nextPositionToBePlayed = -1;
-                                    nextToBePlayedIndex = -1;
+                    //
+                    if(containers != null) {
+                        //
+                        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                            if(!debugMediaIsPlaying) {
+                                debugMediaIsPlaying = true;
+                                Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "MediaPlayer started playing audio");
+                            }
+                            if (bFirstTimeOnly) {
+                                Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "First Time Only");
+                                if (currentPlaySegmentIndex == -1) {
+                                    currentPlaySegmentIndex = getEarliestPlayableIndex(containers);
+                                    Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Current play position's index is " + currentPlaySegmentIndex);
                                 }
+                                nextToBePlayedIndex = getEarliestNextPlayableIndex(containers, currentPlaySegmentIndex);
+                                nextPositionToBePlayed = containers.get(nextToBePlayedIndex).getStart_timestamp();
+                                Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Next play position is " + nextPositionToBePlayed);
+                                Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Next play position's index is " + nextToBePlayedIndex);
+                                bFirstTimeOnly = false;
                             }
+                            if (currentPlaySegmentIndex != -1) {
+                                long now = System.currentTimeMillis();
+                                if (lastCheckTime == 0) lastCheckTime = now;
+                                long refTime = containers.get(currentPlaySegmentIndex).getEnd_timestamp();
+                                long diff = now - lastCheckTime;
+                                Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "vals: " + now + ", " + lastCheckTime + ", " + refTime + ", " + diff);
+                                Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "check range between: " + (refTime-diff) + " ~ " + refTime + ", with a value of: " + mediaPlayer.getCurrentPosition());
 
-                            lastCheckTime = now;
+                                if (SegmentContainer.isInRange(refTime - diff, refTime, mediaPlayer.getCurrentPosition())) {
+                                    Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Current segment's end position has been reached");
+                                    if(containers.get(currentPlaySegmentIndex).isLooping()) {
+                                        bAgain = true;
+                                        Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Current segment's condition was set to loop");
+                                    }
+                                    else {
+                                        bNext = true;
+                                        Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Going to next segment");
+                                    }
+                                }
+                                if(bCheckCurrent) {
+                                    bCheckCurrent = false;
+                                    Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Check if current segment has been deactivated");
+                                    if(!containers.get(currentPlaySegmentIndex).isOn()) {
+                                        Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Current segment has been deactivated");
+                                        Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Last current segment index was " + currentPlaySegmentIndex);
+                                        currentPlaySegmentIndex = getEarliestNextPlayableIndex(containers, currentPlaySegmentIndex);
+                                        nextToBePlayedIndex = getEarliestNextPlayableIndex(containers, currentPlaySegmentIndex);
+                                        nextPositionToBePlayed = containers.get(nextToBePlayedIndex).getStart_timestamp();
+                                        Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "New current segment index is " + currentPlaySegmentIndex);
+                                        mediaPlayer.seekTo(containers.get(currentPlaySegmentIndex).getStart_timestamp(), SEEKMODE);
+                                    }
+                                }
+                                if(bNext) {
+                                    bNext = false;
+                                    Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Last current segment index was " + currentPlaySegmentIndex);
+                                    mediaPlayer.seekTo(nextPositionToBePlayed, SEEKMODE);
+                                    currentPlaySegmentIndex = nextToBePlayedIndex;
+                                    nextToBePlayedIndex = getEarliestNextPlayableIndex(containers, currentPlaySegmentIndex);
+                                    if(nextToBePlayedIndex == -1) throw new IllegalStateException();
+                                    nextPositionToBePlayed = containers.get(nextToBePlayedIndex).getStart_timestamp();
+                                    Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "New current segment index is " + currentPlaySegmentIndex);
+                                } else if (bAgain) {
+                                    bAgain = false;
+                                    Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Looping index of " + currentPlaySegmentIndex);
+                                    mediaPlayer.seekTo(containers.get(currentPlaySegmentIndex).getStart_timestamp(), SEEKMODE);
+                                } else if (bPrev) {
+                                    bPrev = false;
+                                    Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Last current segment index was " + currentPlaySegmentIndex);
+                                    nextToBePlayedIndex = currentPlaySegmentIndex;
+                                    nextPositionToBePlayed = containers.get(nextToBePlayedIndex).getStart_timestamp();
+                                    currentPlaySegmentIndex = getEarliestPrevPlayableIndex(containers, currentPlaySegmentIndex);
+                                    if(currentPlaySegmentIndex == -1) throw new IllegalStateException();
+                                    else {
+                                        Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "New current segment index is " + currentPlaySegmentIndex);
+                                        mediaPlayer.seekTo(containers.get(currentPlaySegmentIndex).getStart_timestamp(), SEEKMODE);
+                                    }
+                                }
+                                lastCheckTime = now;
+                            }
                         }
                     }
+                } catch (IllegalStateException e) {
+                    Log.d(DEBUG_PLAYABLE_PREPARER_TAG, "Something Went Wrong!!");
+                    mediaPlayer.stop();
+                    mediaPlayer.prepareAsync();
+                    currentPlaySegmentIndex = -1;
+                    nextToBePlayedIndex = -1;
+                    nextPositionToBePlayed = -1;
+                    lastCheckTime = 0;
+                    bFirstTimeOnly = true;
+                    requireActivity().runOnUiThread(()-> Toast.makeText(requireContext(), "Something Went Wrong!!", Toast.LENGTH_SHORT).show());
                 }
             }
         });
@@ -310,8 +413,14 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
             @Override
             public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
                 super.onTouchEvent(rv, e);
-                dataModified = true;
+                bInterruptDataModified = true;
             }
+        });
+
+        if(mediaPlayer != null) mediaPlayer.setOnCompletionListener(mp -> ((MaterialButton) binding.btnPlay).setIcon(icon_Play));
+        if(mediaPlayer != null) mediaPlayer.setOnErrorListener((mp, what, extra) -> {
+            ((MaterialButton) binding.btnPlay).setIcon(icon_Play);
+            return false;
         });
 
         return root;
@@ -484,19 +593,34 @@ public class PlayerFragment extends Fragment implements SegmentAdapter.SegmentAd
         rootDialog.show();
     }
 
+    //region playlist control
     private int getEarliestPlayableIndex(ArrayList<SegmentContainer> data) {
         for(int i = 0; i < data.size(); ++i)
             if(data.get(i).isOn())
                 return i;
         return -1;
     }
-
     private int getEarliestNextPlayableIndex(ArrayList<SegmentContainer> data, int after) {
         for(int i = after+1; i < data.size(); ++i)
             if(data.get(i).isOn())
                 return i;
+        if(mediaPlayer != null && mediaPlayer.isLooping())
+            for(int i = 0; i <= after; ++i)
+                if(data.get(i).isOn())
+                    return i;
         return -1;
     }
+    private int getEarliestPrevPlayableIndex(ArrayList<SegmentContainer> data, int before) {
+        for(int i = before-1; i >= 0; --i)
+            if(data.get(i).isOn())
+                return i;
+        if(mediaPlayer != null && mediaPlayer.isLooping())
+            for(int i = data.size()-1; i >= before; --i)
+                if(data.get(i).isOn())
+                    return i;
+        return -1;
+    }
+    //endregion
 
     //region Resizing RecyclerView Codes
     private void resizeRecyclerView() {
